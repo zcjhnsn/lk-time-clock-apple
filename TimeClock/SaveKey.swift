@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum SaveKey: String {
+    case redmineKey = "RedmineKey"
+}
