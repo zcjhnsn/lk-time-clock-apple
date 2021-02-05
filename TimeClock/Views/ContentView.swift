@@ -7,12 +7,14 @@
 
 import SwiftUI
 
+// https://medium.com/@drevathy/custom-themes-with-color-assets-in-swift-9e64f91ee45d
 struct ContentView: View {
     @ObservedObject var tasks = Tasks()
     
     @State var isTimerPaused: Bool = true
     @State var activeTask: UUID = UUID()
     @State var timer: Timer? = nil
+    @State private var totalTime: Int = 0
     @State private var redmineKey = UserDefaults.standard.string(forKey: SaveKey.redmineKey.rawValue)
     @State private var showModal: Bool = UserDefaults.standard.string(forKey: SaveKey.redmineKey.rawValue) == nil
     @State private var showingAlert: Bool = false
@@ -26,7 +28,7 @@ struct ContentView: View {
             Group {
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("Total: \(timeString(time: TimeInterval(tasks.items.reduce(0) { $0 + $1.time })))")
+                        Text("Total: \(TimeInterval(totalTime).timeString())")
                             .font(.title)
                             .foregroundColor(isTimerPaused ? Color.red : Color.primary)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -34,7 +36,7 @@ struct ContentView: View {
                         
                         if isTimerPaused {
                             Text("(Paused)")
-                                .foregroundColor(.red)
+                                .foregroundColor(.darkRed)
                                 .padding(.trailing, 16)
                         }
                     }
@@ -45,7 +47,7 @@ struct ContentView: View {
                 }
                 List {
                     ForEach(tasks.items) { item in
-                        EntryView(isTimerPaused: activeTask.uuidString != item.id.uuidString, task: item, progress: CGFloat(Double(item.time)/3600.0), id: item.id, startPauseAction: {
+                        EntryView(isTimerPaused: activeTask.uuidString != item.id.uuidString, task: item, id: item.id, startPauseAction: {
                             if isTimerPaused {
                                 startTimer(forTask: item.id)
                             } else if !isTimerPaused && activeTask != item.id {
@@ -57,11 +59,17 @@ struct ContentView: View {
 
                     }
                 }
+                .listStyle(PlainListStyle())
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 Spacer()
                 
                 Button(action: {
+                    
+                    //self.tasks.objectWillChange.send()
+                    for item in tasks.items {
+                        print("\(item.name) \(item.time)")
+                    }
                     if tasks.items.isEmpty || redmineKey == nil {
                         self.showingAlert = true
                     }
@@ -120,18 +128,9 @@ struct ContentView: View {
                 pauseTimer()
                 return
             }
-            
+            self.totalTime += 1
             self.tasks.items[index].time += 1
         }
-    }
-    
-    func timeString(time: TimeInterval) -> String {
-        let hour = Int(time) / 3600
-        let minute = Int(time) / 60 % 60
-        let second = Int(time) % 60
-        
-        // return formated string
-        return String(format: "%02i:%02i:%02i", hour, minute, second)
     }
 }
 
