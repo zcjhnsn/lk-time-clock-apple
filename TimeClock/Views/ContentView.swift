@@ -20,7 +20,7 @@ struct ContentView: View {
     @State private var showingAlert: Bool = false
     
     init() {
-//        UITableView.appearance().backgroundColor = UIColor.systemBackground
+		UITableViewCell.appearance().selectionStyle = .none
     }
     
     var body: some View {
@@ -46,17 +46,18 @@ struct ContentView: View {
                         .padding(.leading, 16)
                 }
                 List {
-                    ForEach(tasks.items) { item in
-                        EntryView(isTimerPaused: activeTask.uuidString != item.id.uuidString, task: item, id: item.id, startPauseAction: {
-                            if isTimerPaused {
-                                startTimer(forTask: item.id)
-                            } else if !isTimerPaused && activeTask != item.id {
-                                startTimer(forTask: item.id)
-                            } else {
-                                pauseTimer()
-                            }
-                        })
-
+					ForEach(tasks.items.indices, id: \.self) { index in
+						NavigationLink(destination: Text("\(self.tasks.items[index].name) \(self.tasks.items[index].time)")) {
+							EntryView(isTimerPaused: activeTask.uuidString != self.tasks.items[index].id.uuidString, task: self.$tasks.items[index], id: self.tasks.items[index].id, startPauseAction: {
+								if isTimerPaused {
+									startTimer(forTask: self.tasks.items[index].id)
+								} else if !isTimerPaused && activeTask != self.tasks.items[index].id {
+									startTimer(forTask: self.tasks.items[index].id)
+								} else {
+									pauseTimer()
+								}
+							})
+						}
                     }
                 }
                 .listStyle(PlainListStyle())
@@ -96,7 +97,7 @@ struct ContentView: View {
                                     }),trailing:
                 Button(action: {
                     withAnimation(.default) {
-                        tasks.items.append(TaskItem(name: "New task \(tasks.items.count + 1)", time: 0))
+                        tasks.items.append(TaskItem(name: "", time: 0))
                     }
                 }, label: {
                     Image(systemName: "plus")

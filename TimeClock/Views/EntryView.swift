@@ -11,12 +11,11 @@ struct EntryView: View {
     @State private var showingAlert = false
     
     var isTimerPaused: Bool
-    @ObservedObject var task: TaskItem
-    @State private var title: String = "" {
-        didSet {
-            self.task.name = title
-        }
-    }
+//    @ObservedObject var task: TaskItem
+    @Binding var task: TaskItem
+//    @Binding var title: String
+//	@State private var title: String = ""
+	
     var id: UUID
     var percentage: Double {
         return Double(task.time) / 3600.0 * 100
@@ -33,14 +32,14 @@ struct EntryView: View {
         HStack {
             VStack() {
                 
-                PercentageRing(ringWidth: 15, percent: Double(task.time) / 3600.0 * 100, backgroundColor: darkColor.opacity(0.2), foregroundColors: [darkColor, lightColor])
+                PercentageRing(ringWidth: 15, percent: percentage, backgroundColor: darkColor.opacity(0.2), foregroundColors: [darkColor, lightColor])
                     .frame(width: 100, height: 100)
                 
                 Text("\(TimeInterval(task.time).timeString())")
             }
             VStack {
-                TextField("New Task", text: $title, onCommit:  {
-                    self.task.name = title
+				TextField("New Task", text: $task.name, onCommit:  {
+                    //self.task.name = title
                     self.hideKeyboard()
                 })
                 .frame(maxWidth: .infinity)
@@ -74,7 +73,7 @@ struct EntryView: View {
         .background(Color.secondaryBackground)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .onTapGesture {
-            self.task.name = title
+            //self.task.name = title
             self.hideKeyboard()
         }
     }
@@ -82,7 +81,7 @@ struct EntryView: View {
 
 struct EntryView_Previews: PreviewProvider {
     static var previews: some View {
-        EntryView(isTimerPaused: true, task: TaskItem(name: "Hello", time: 0), id: UUID(), startPauseAction: {})
+		EntryView(isTimerPaused: true, task: .constant(TaskItem(name: "Hello", time: 0)), id: UUID(), startPauseAction: {})
             .preferredColorScheme(.dark)
     }
 }
