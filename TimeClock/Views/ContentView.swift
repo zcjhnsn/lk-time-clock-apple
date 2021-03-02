@@ -20,93 +20,109 @@ struct ContentView: View {
     @State private var showingAlert: Bool = false
     
     init() {
-		UITableViewCell.appearance().selectionStyle = .none
+        UITableView.appearance().separatorStyle = .none
+        if #available(iOS 13.0, *) {
+            UITableViewCell.appearance().selectionStyle = .none
+        }
     }
     
     var body: some View {
-        NavigationView {
-            Group {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Total: \(TimeInterval(totalTime).timeString())")
-                            .font(.title)
-                            .foregroundColor(isTimerPaused ? Color.red : Color.primary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 16)
+        GeometryReader { geo in
+            NavigationView {
+                Group {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Total: \(TimeInterval(totalTime).timeString())")
+                                .font(.title)
+                                .foregroundColor(isTimerPaused ? Color.red : Color.primary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 16)
+                            
+                            if isTimerPaused {
+                                Text("(Paused)")
+                                    .foregroundColor(.darkRed)
+                                    .padding(.trailing, 16)
+                            }
+                        }
                         
-                        if isTimerPaused {
-                            Text("(Paused)")
-                                .foregroundColor(.darkRed)
-                                .padding(.trailing, 16)
+                        
+                        Text("RM Key: \(redmineKey ?? "none")")
+                            .padding(.leading, 16)
+                    }
+                    List {
+                        ForEach(tasks.items.indices, id: \.self) { index in
+                            NavigationLink(destination: EntryDetailView(task: self.$tasks.items[index])) {
+                                EntryView(isTimerPaused: activeTask.uuidString != self.tasks.items[index].id.uuidString, task: self.$tasks.items[index], id: self.tasks.items[index].id, startPauseAction: {
+                                    if isTimerPaused {
+                                        startTimer(forTask: self.tasks.items[index].id)
+                                    } else if !isTimerPaused && activeTask != self.tasks.items[index].id {
+                                        startTimer(forTask: self.tasks.items[index].id)
+                                    } else {
+                                        pauseTimer()
+                                    }
+                                })
+                                .buttonStyle(PlainButtonStyle())
+                            }
                         }
                     }
+                    .listStyle(PlainListStyle())
                     
                     
-                    Text("RM Key: \(redmineKey ?? "none")")
-                        .padding(.leading, 16)
+                    Spacer()
+                    
+                    Button(action: {
+                        
+                        //self.tasks.objectWillChange.send()
+                        for item in tasks.items {
+                            print("\(item.name) \(item.time)")
+                        }
+                        if tasks.items.isEmpty || redmineKey == nil {
+                            self.showingAlert = true
+                        }
+                    }, label: {
+                        Text("Submit Time")
+                            .frame(maxWidth: .infinity, maxHeight: 36)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding()
+                    })
+                    .alert(isPresented: $showingAlert, content: {
+                        Alert(title: Text("Cannot Submit Time"), message: Text("Must have at least one time entry and a Redmine API Key."), dismissButton: .default(Text("Okay")))
+                    })
+                    
                 }
-                List {
-					ForEach(tasks.items.indices, id: \.self) { index in
-						NavigationLink(destination: Text("\(self.tasks.items[index].name) \(self.tasks.items[index].time)")) {
-							EntryView(isTimerPaused: activeTask.uuidString != self.tasks.items[index].id.uuidString, task: self.$tasks.items[index], id: self.tasks.items[index].id, startPauseAction: {
-								if isTimerPaused {
-									startTimer(forTask: self.tasks.items[index].id)
-								} else if !isTimerPaused && activeTask != self.tasks.items[index].id {
-									startTimer(forTask: self.tasks.items[index].id)
-								} else {
-									pauseTimer()
-								}
-							})
-						}
-                    }
-                }
-                .listStyle(PlainListStyle())
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .navigationTitle("Time Clock")
+                .navigationBarItems(
+                    leading:
+                        Button(action: {
+                            showModal = true
+                        }, label: {
+                            Image(systemName: "gear")
+                                .foregroundColor(.primary)
+                        }),
+                    trailing:
+                        Button(action: {
+                            withAnimation(.default) {
+                                tasks.items.append(TaskItem(name: "", time: 0))
+                            }
+                        }, label: {
+                            Image(systemName: "plus")
+                                .foregroundColor(.primary)
+                        })
+                )
                 
-                Spacer()
-                
-                Button(action: {
-                    
-                    //self.tasks.objectWillChange.send()
-                    for item in tasks.items {
-                        print("\(item.name) \(item.time)")
-                    }
-                    if tasks.items.isEmpty || redmineKey == nil {
-                        self.showingAlert = true
-                    }
-                }, label: {
-                    Text("Submit Time")
-                        .frame(maxWidth: .infinity, maxHeight: 36)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding()
-                })
-                .alert(isPresented: $showingAlert, content: {
-                    Alert(title: Text("Cannot Submit Time"), message: Text("Must have at least one time entry and a Redmine API Key."), dismissButton: .default(Text("Okay")))
-                })
-                
+                WelcomeView()
             }
-            .navigationTitle("Time Clock")
-            .navigationBarItems(leading:
-                                    Button(action: {
-                                        showModal = true
-                                    }, label: {
-                                        Image(systemName: "gear")
-                                            .foregroundColor(.primary)
-                                    }),trailing:
-                Button(action: {
-                    withAnimation(.default) {
-                        tasks.items.append(TaskItem(name: "", time: 0))
-                    }
-                }, label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(.primary)
-                })
-            )
-        }.sheet(isPresented: $showModal, content: {
-            RedmineKeyView(shouldShow: $showModal)
-        })
+            .phoneOnlyStackNavigationView()
+            .accentColor(.primary)
+            .sheet(isPresented: $showModal, content: {
+                RedmineKeyView(shouldShow: $showModal)
+            })
+        }
+        
+
+        
         
     }
     
@@ -138,6 +154,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .preferredColorScheme(.dark)
+            //.preferredColorScheme(.dark)
     }
 }

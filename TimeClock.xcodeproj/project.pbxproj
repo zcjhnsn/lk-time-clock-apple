@@ -15,7 +15,6 @@
 		0711FADE25CC517800F70E27 /* TimeClockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FADD25CC517800F70E27 /* TimeClockUITests.swift */; };
 		0711FAEF25CC51AC00F70E27 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FAEE25CC51AC00F70E27 /* Task.swift */; };
 		0711FAF425CC78F500F70E27 /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FAF325CC78F500F70E27 /* Color+Ext.swift */; };
-		0711FAF925CC793100F70E27 /* ActivityRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FAF825CC793100F70E27 /* ActivityRingView.swift */; };
 		0711FAFE25CC7A9400F70E27 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FAFD25CC7A9400F70E27 /* EntryView.swift */; };
 		0711FB0325CC9B0F00F70E27 /* RedmineKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB0225CC9B0F00F70E27 /* RedmineKeyView.swift */; };
 		0711FB0825CC9E0B00F70E27 /* SaveKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB0725CC9E0B00F70E27 /* SaveKey.swift */; };
@@ -24,6 +23,8 @@
 		0711FB2F25CDA42A00F70E27 /* PercentageRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB2E25CDA42A00F70E27 /* PercentageRing.swift */; };
 		0711FB3425CDB64700F70E27 /* TimeInterval+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB3325CDB64700F70E27 /* TimeInterval+Ext.swift */; };
 		0711FB3925CDC11600F70E27 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB3825CDC11600F70E27 /* View+Ext.swift */; };
+		0780AB5A25EEED2C00DC55F9 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB5925EEED2C00DC55F9 /* EntryDetailView.swift */; };
+		0780AB6225EEF2E400DC55F9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB6125EEF2E400DC55F9 /* WelcomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +59,6 @@
 		0711FADF25CC517800F70E27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0711FAEE25CC51AC00F70E27 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0711FAF325CC78F500F70E27 /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
-		0711FAF825CC793100F70E27 /* ActivityRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRingView.swift; sourceTree = "<group>"; };
 		0711FAFD25CC7A9400F70E27 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		0711FB0225CC9B0F00F70E27 /* RedmineKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedmineKeyView.swift; sourceTree = "<group>"; };
 		0711FB0725CC9E0B00F70E27 /* SaveKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveKey.swift; sourceTree = "<group>"; };
@@ -67,6 +67,8 @@
 		0711FB2E25CDA42A00F70E27 /* PercentageRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageRing.swift; sourceTree = "<group>"; };
 		0711FB3325CDB64700F70E27 /* TimeInterval+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Ext.swift"; sourceTree = "<group>"; };
 		0711FB3825CDC11600F70E27 /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
+		0780AB5925EEED2C00DC55F9 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		0780AB6125EEF2E400DC55F9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +174,8 @@
 				0711FAC225CC517300F70E27 /* ContentView.swift */,
 				0711FB0225CC9B0F00F70E27 /* RedmineKeyView.swift */,
 				0711FAFD25CC7A9400F70E27 /* EntryView.swift */,
-				0711FAF825CC793100F70E27 /* ActivityRingView.swift */,
+				0780AB5925EEED2C00DC55F9 /* EntryDetailView.swift */,
+				0780AB6125EEF2E400DC55F9 /* WelcomeView.swift */,
 				0711FB2E25CDA42A00F70E27 /* PercentageRing.swift */,
 			);
 			path = Views;
@@ -328,15 +331,16 @@
 				0711FB2225CDA3AB00F70E27 /* RingShape.swift in Sources */,
 				0711FAC325CC517300F70E27 /* ContentView.swift in Sources */,
 				0711FAF425CC78F500F70E27 /* Color+Ext.swift in Sources */,
-				0711FAF925CC793100F70E27 /* ActivityRingView.swift in Sources */,
 				0711FB2F25CDA42A00F70E27 /* PercentageRing.swift in Sources */,
 				0711FAEF25CC51AC00F70E27 /* Task.swift in Sources */,
 				0711FAC125CC517300F70E27 /* TimeClockApp.swift in Sources */,
 				0711FAFE25CC7A9400F70E27 /* EntryView.swift in Sources */,
 				0711FB3425CDB64700F70E27 /* TimeInterval+Ext.swift in Sources */,
 				0711FB0325CC9B0F00F70E27 /* RedmineKeyView.swift in Sources */,
+				0780AB5A25EEED2C00DC55F9 /* EntryDetailView.swift in Sources */,
 				0711FB3925CDC11600F70E27 /* View+Ext.swift in Sources */,
 				0711FB0D25CDA30200F70E27 /* Double+Ext.swift in Sources */,
+				0780AB6225EEF2E400DC55F9 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
