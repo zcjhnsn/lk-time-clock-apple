@@ -11,6 +11,8 @@ class TaskItem: ObservableObject, Identifiable, Equatable {
     let id = UUID()
     @Published var name: String
     @Published var time: Int
+    @Published var comment: String = ""
+    @Published var activityTypeID: Int = -1
     
     static func == (lhs: TaskItem, rhs: TaskItem) -> Bool {
         lhs.id == rhs.id

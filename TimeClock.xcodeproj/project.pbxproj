@@ -25,6 +25,9 @@
 		0711FB3925CDC11600F70E27 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711FB3825CDC11600F70E27 /* View+Ext.swift */; };
 		0780AB5A25EEED2C00DC55F9 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB5925EEED2C00DC55F9 /* EntryDetailView.swift */; };
 		0780AB6225EEF2E400DC55F9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB6125EEF2E400DC55F9 /* WelcomeView.swift */; };
+		0780AB6725EFED6400DC55F9 /* TimerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB6625EFED6400DC55F9 /* TimerHelper.swift */; };
+		0780AB6C25F01EF900DC55F9 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB6B25F01EF800DC55F9 /* Agent.swift */; };
+		0780AB7225F01F4400DC55F9 /* RedmineAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0780AB7125F01F4400DC55F9 /* RedmineAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,9 @@
 		0711FB3825CDC11600F70E27 /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		0780AB5925EEED2C00DC55F9 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
 		0780AB6125EEF2E400DC55F9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		0780AB6625EFED6400DC55F9 /* TimerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerHelper.swift; sourceTree = "<group>"; };
+		0780AB6B25F01EF800DC55F9 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		0780AB7125F01F4400DC55F9 /* RedmineAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedmineAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				0711FAC025CC517300F70E27 /* TimeClockApp.swift */,
+				0780AB7025F01EFE00DC55F9 /* API */,
 				0711FB1925CDA35C00F70E27 /* Constants */,
 				0711FB1D25CDA37500F70E27 /* Models */,
 				0711FB1525CDA33D00F70E27 /* Views */,
@@ -194,8 +201,18 @@
 			children = (
 				0711FAEE25CC51AC00F70E27 /* Task.swift */,
 				0711FB2125CDA3AB00F70E27 /* RingShape.swift */,
+				0780AB6625EFED6400DC55F9 /* TimerHelper.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		0780AB7025F01EFE00DC55F9 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0780AB6B25F01EF800DC55F9 /* Agent.swift */,
+				0780AB7125F01F4400DC55F9 /* RedmineAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,11 +345,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0711FB0825CC9E0B00F70E27 /* SaveKey.swift in Sources */,
+				0780AB7225F01F4400DC55F9 /* RedmineAPI.swift in Sources */,
 				0711FB2225CDA3AB00F70E27 /* RingShape.swift in Sources */,
 				0711FAC325CC517300F70E27 /* ContentView.swift in Sources */,
 				0711FAF425CC78F500F70E27 /* Color+Ext.swift in Sources */,
 				0711FB2F25CDA42A00F70E27 /* PercentageRing.swift in Sources */,
+				0780AB6C25F01EF900DC55F9 /* Agent.swift in Sources */,
 				0711FAEF25CC51AC00F70E27 /* Task.swift in Sources */,
+				0780AB6725EFED6400DC55F9 /* TimerHelper.swift in Sources */,
 				0711FAC125CC517300F70E27 /* TimeClockApp.swift in Sources */,
 				0711FAFE25CC7A9400F70E27 /* EntryView.swift in Sources */,
 				0711FB3425CDB64700F70E27 /* TimeInterval+Ext.swift in Sources */,

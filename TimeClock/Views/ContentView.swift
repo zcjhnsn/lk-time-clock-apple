@@ -10,11 +10,7 @@ import SwiftUI
 // https://medium.com/@drevathy/custom-themes-with-color-assets-in-swift-9e64f91ee45d
 struct ContentView: View {
     @ObservedObject var tasks = Tasks()
-    
-    @State var isTimerPaused: Bool = true
-    @State var activeTask: UUID = UUID()
-    @State var timer: Timer? = nil
-    @State private var totalTime: Int = 0
+    @StateObject var timerHelper = TimerHelper()
     @State private var redmineKey = UserDefaults.standard.string(forKey: SaveKey.redmineKey.rawValue)
     @State private var showModal: Bool = UserDefaults.standard.string(forKey: SaveKey.redmineKey.rawValue) == nil
     @State private var showingAlert: Bool = false
@@ -32,13 +28,13 @@ struct ContentView: View {
                 Group {
                     VStack(alignment: .leading) {
                         HStack {
-                            Text("Total: \(TimeInterval(totalTime).timeString())")
+                            Text("Total: \(TimeInterval(timerHelper.totalTime).timeString())")
                                 .font(.title)
-                                .foregroundColor(isTimerPaused ? Color.red : Color.primary)
+                                .foregroundColor(timerHelper.isTimerPaused ? Color.red : Color.primary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.leading, 16)
                             
-                            if isTimerPaused {
+                            if timerHelper.isTimerPaused {
                                 Text("(Paused)")
                                     .foregroundColor(.darkRed)
                                     .padding(.trailing, 16)
@@ -52,10 +48,10 @@ struct ContentView: View {
                     List {
                         ForEach(tasks.items.indices, id: \.self) { index in
                             NavigationLink(destination: EntryDetailView(task: self.$tasks.items[index])) {
-                                EntryView(isTimerPaused: activeTask.uuidString != self.tasks.items[index].id.uuidString, task: self.$tasks.items[index], id: self.tasks.items[index].id, startPauseAction: {
-                                    if isTimerPaused {
+                                EntryView(isTimerPaused: timerHelper.activeTask.uuidString != self.tasks.items[index].id.uuidString, task: self.$tasks.items[index], id: self.tasks.items[index].id, startPauseAction: {
+                                    if timerHelper.isTimerPaused {
                                         startTimer(forTask: self.tasks.items[index].id)
-                                    } else if !isTimerPaused && activeTask != self.tasks.items[index].id {
+                                    } else if !timerHelper.isTimerPaused && timerHelper.activeTask != self.tasks.items[index].id {
                                         startTimer(forTask: self.tasks.items[index].id)
                                     } else {
                                         pauseTimer()
@@ -120,32 +116,30 @@ struct ContentView: View {
                 RedmineKeyView(shouldShow: $showModal)
             })
         }
-        
-
-        
+        .environmentObject(timerHelper)
         
     }
     
     func pauseTimer() {
-        timer?.invalidate()
-        timer = nil
-        isTimerPaused.toggle()
-        activeTask = UUID()
+        timerHelper.timer?.invalidate()
+        timerHelper.timer = nil
+        timerHelper.isTimerPaused.toggle()
+        timerHelper.activeTask = UUID()
     }
     
     func startTimer(forTask taskID: UUID) {
-        if !isTimerPaused {
+        if !timerHelper.isTimerPaused {
             pauseTimer()
         }
         
-        isTimerPaused.toggle()
-        activeTask = taskID
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        timerHelper.isTimerPaused.toggle()
+        timerHelper.activeTask = taskID
+        timerHelper.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             guard let index = self.tasks.items.firstIndex(where: { $0.id == taskID }) else {
                 pauseTimer()
                 return
             }
-            self.totalTime += 1
+            self.timerHelper.totalTime += 1
             self.tasks.items[index].time += 1
         }
     }
